@@ -1,3 +1,7 @@
+# How to configure Asp.Net Core Identity - database, primary key data type
+
+By default, it's used as the primary key `int`, but it's possible to change it:
+
 # How to configure DbContext for ASP.NET Core Identity
 
 - You can setup the `DbContext` - in `Startup.cs`:

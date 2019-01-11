@@ -1,4 +1,4 @@
-﻿# Create the migration of database:
+# Create the migration of database:
 
 ```
 Add-Migration Initial -context AdminDbContext -output Data/Migrations

@@ -13,6 +13,7 @@ The administration for the IdentityServer4 and Asp.Net Core Identity.
    :caption: Introduction
 
    introduction/overview
+   introduction/ui_preview
 
 .. toctree::
    :maxdepth: 3
@@ -23,6 +24,7 @@ The administration for the IdentityServer4 and Asp.Net Core Identity.
    configuration/migrations_and_seeding
    configuration/changing_database_engine
    configuration/using_with_existing_is4_instance
+   configuration/using_with_existing_asp_net_identity
    
 .. toctree::
    :maxdepth: 3
