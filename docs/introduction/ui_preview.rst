@@ -1,9 +1,10 @@
-# Administration UI preview
+Administration UI preview
+=========================
 
 - This administration uses bootstrap 4
 
-![Admin-preview](docs/Images/App/Skoruba-Home-Preview.PNG)
+.. image:: docs/Images/App/Skoruba-Home-Preview.PNG
 
-- Forms:
+- Forms
 
-![Admin-preview-form](docs/Images/App/Skoruba-Forms-Preview.PNG)
+.. image::  docs/Images/App/Skoruba-Forms-Preview.PNG
