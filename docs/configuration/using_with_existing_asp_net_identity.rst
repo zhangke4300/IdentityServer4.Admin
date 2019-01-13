@@ -47,18 +47,18 @@ Original:
 
 
     public class UserIdentity : IdentityUser<int>
-	{
+    {
 
-	}
+    }
 
 
 New:
 
 
     public class UserIdentity : IdentityUser<Guid>
-	{
+    {
 
-	}
+    }
 
 
 - Change ``int`` to ``Guid`` in other files in this folder - ``Skoruba.IdentityServer4.Admin.EntityFramework/Entities/Identity``

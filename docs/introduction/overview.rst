@@ -7,8 +7,7 @@ Solution structure
 STS
 
 ``Skoruba.IdentityServer4.STS.Identity``
-    [Quickstart UI for the IdentityServer4 with Asp.Net Core Identity and EF Core storage](https://github.com/IdentityServer/IdentityServer4.Samples/tree/master/Quickstarts/Combined_AspId_and_EFStorage)
-
+    Quickstart UI for the IdentityServer4 with Asp.Net Core Identity and EF Core storage
 Admin UI
 
 ``Skoruba.IdentityServer4.Admin``
@@ -42,7 +41,7 @@ Tests
 
 The admininistration contains the following sections
 
-![Skoruba.IdentityServer4.Admin App](docs/Images/Skoruba.IdentityServer4.Admin-Solution.png)
+.. image::  images/Skoruba.IdentityServer4.Admin-Solution.png
 
 IdentityServer4
 ---------------
@@ -110,7 +109,7 @@ Application Diagram
 Template uses following list of nuget packages
 ----------------------------------------------
 
-- [Available nuget packages](https://www.nuget.org/profiles/skoruba)
+- `Available nuget packages <https://www.nuget.org/profiles/skoruba>`_
 
 Authentication and Authorization
 --------------------------------
@@ -135,8 +134,8 @@ Tests
 - The solution contains unit and integration tests.
 - **Stage environment is used for integration tests**:
 
-  - `DbContext` contains setup for InMemory database
-  - `Authentication` is setup for `CookieAuthentication` - with fake login url only for testing purpose
-  - `AuthenticatedTestRequestMiddleware` - middleware for testing of authentication.
+  - ``DbContext`` contains setup for InMemory database
+  - ``Authentication`` is setup for ``CookieAuthentication`` - with fake login url only for testing purpose
+  - ``AuthenticatedTestRequestMiddleware`` - middleware for testing of authentication.
 
-- If you want to use `Stage environment` for deploying - it is necessary to change these settings in `StartupHelpers.cs`.
+- If you want to use `Stage environment` for deploying - it is necessary to change these settings in ``StartupHelpers.cs``.
