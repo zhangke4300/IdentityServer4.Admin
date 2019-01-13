@@ -103,7 +103,7 @@ It is possible to define the configuration according the client type - by defaul
 Application Diagram
 -------------------
 
-.. image:: docs/Images/Skoruba.IdentityServer4.Admin-App-Diagram.png
+.. image:: images/Skoruba.IdentityServer4.Admin-App-Diagram.png
 
 
 Template uses following list of nuget packages
@@ -114,15 +114,15 @@ Template uses following list of nuget packages
 Authentication and Authorization
 --------------------------------
 
-- Change the specific URLs and names for the IdentityServer and Authentication settings in `Constants/AuthenticationConsts` or `appsettings.json`
-- `Constants/AuthorizationConsts.cs` contains configuration of constants connected with authorization - definition of the default name of admin policy
-- In the controllers is used the policy which name is stored in - `AuthorizationConsts.AdministrationPolicy`. In the policy - `AuthorizationConsts.AdministrationPolicy` is defined required role stored in - `AuthorizationConsts.AdministrationRole`.
+- Change the specific URLs and names for the IdentityServer and Authentication settings in ``Constants/AuthenticationConsts`` or `appsettings.json`
+- ``Constants/AuthorizationConsts.cs`` contains configuration of constants connected with authorization - definition of the default name of admin policy
+- In the controllers is used the policy which name is stored in - ``AuthorizationConsts.AdministrationPolicy``. In the policy - `AuthorizationConsts.AdministrationPolicy` is defined required role stored in - `AuthorizationConsts.AdministrationRole`.
 - With the default configuration, it is necessary to configure and run instance of IdentityServer4. It is possible to use initial migration for creating the client as it mentioned above
 
 Localizations - labels, messages
 ---------------------------------
 
-- All labels and messages are stored in the resources `.resx` - locatated in `/Resources`
+- All labels and messages are stored in the resources ``.resx`` - locatated in ``/Resources``
 
   - Client label descriptions from - http://docs.identityserver.io/en/release/reference/client.html
   - Api Resource label descriptions from - http://docs.identityserver.io/en/release/reference/api_resource.html
@@ -138,4 +138,4 @@ Tests
   - ``Authentication`` is setup for ``CookieAuthentication`` - with fake login url only for testing purpose
   - ``AuthenticatedTestRequestMiddleware`` - middleware for testing of authentication.
 
-- If you want to use `Stage environment` for deploying - it is necessary to change these settings in ``StartupHelpers.cs``.
+- If you want to use ``Stage environment`` for deploying - it is necessary to change these settings in ``StartupHelpers.cs``.

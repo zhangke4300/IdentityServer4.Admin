@@ -1,7 +1,7 @@
 Skoruba IdentityServer4 Admin
 ###############################
 
-.. image:: docs/Images/Skoruba.IdentityServer4.Admin-Logo-ReadMe.png
+.. image:: images/Skoruba.IdentityServer4.Admin-Logo-ReadMe.png
    :align: center
   
 The administration for the IdentityServer4 and Asp.Net Core Identity.

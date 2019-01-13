@@ -7,4 +7,4 @@ Administration UI preview
 
 - Forms
 
-.. image::  images/App/Skoruba-Forms-Preview.PNG
+.. image::  images/Skoruba-Forms-Preview.PNG

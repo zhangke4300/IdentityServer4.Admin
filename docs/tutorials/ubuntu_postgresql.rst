@@ -82,7 +82,7 @@ Final setup
 
 ** Run STS and Admin**
 
-First run STS in `src/Skoruba.IdentityServer4.STS.Identity` launch:
+First run STS in ``src/Skoruba.IdentityServer4.STS.Identity`` launch:
 
     dotnet run
 
