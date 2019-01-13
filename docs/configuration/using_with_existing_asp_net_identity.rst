@@ -10,6 +10,7 @@ By default, it's used as the primary key ``int``, but it's possible to change it
 
 - You can setup the ``DbContext`` - in ``Startup.cs``:
 
+::
     services.AddAdminAspNetIdentityServices<AdminDbContext, UserDto<int>, int, RoleDto<int>, int, int, int,
                                 UserIdentity, UserIdentityRole, int, UserIdentityUserClaim, UserIdentityUserRole,
                                 UserIdentityUserLogin, UserIdentityRoleClaim, UserIdentityUserToken>();
@@ -27,7 +28,7 @@ By default, it's used as the primary key ``int``, but it's possible to change it
 
 Original:
 
-
+::
     services.AddAdminAspNetIdentityServices<AdminDbContext, UserDto<int>, int, RoleDto<int>, int, int, int,
                                 UserIdentity, UserIdentityRole, int, UserIdentityUserClaim, UserIdentityUserRole,
                                 UserIdentityUserLogin, UserIdentityRoleClaim, UserIdentityUserToken>();
@@ -35,6 +36,7 @@ Original:
 
 New:
 
+::
     services.AddAdminAspNetIdentityServices<AdminDbContext, UserDto<Guid>, Guid, RoleDto<Guid>, Guid, Guid, Guid,
                                 UserIdentity, UserIdentityRole, Guid, UserIdentityUserClaim, UserIdentityUserRole,
                                 UserIdentityUserLogin, UserIdentityRoleClaim, UserIdentityUserToken>();
@@ -45,7 +47,7 @@ For example - ``UserIdentity.cs``:
 
 Original:
 
-
+::
     public class UserIdentity : IdentityUser<int>
     {
 
@@ -54,7 +56,7 @@ Original:
 
 New:
 
-
+::
     public class UserIdentity : IdentityUser<Guid>
     {
 
@@ -69,13 +71,14 @@ For example - ``Role.cshtml``:
 
 Original:
 
-
+::
     @model Skoruba.IdentityServer4.Admin.BusinessLogic.Dtos.Identity.RoleDto<int>
     // ...
     @if (!EqualityComparer<int>.Default.Equals(Model.Id, default(int)))
 
 New:
 
+::
     @model Skoruba.IdentityServer4.Admin.BusinessLogic.Dtos.Identity.RoleDto<Guid>
     // ...
     @if (!EqualityComparer<Guid>.Default.Equals(Model.Id, default(Guid)))
@@ -87,12 +90,14 @@ New:
 
 Original:
 
+::
     public class AdminDbContext : IdentityDbContext<UserIdentity, UserIdentityRole, int, UserIdentityUserClaim, UserIdentityUserRole, UserIdentityUserLogin, UserIdentityRoleClaim, UserIdentityUserToken>,
         IAdminConfigurationDbContext, IAdminLogDbContext, IAdminPersistedGrantIdentityDbContext
 
 
 New:
 
+::
     public class AdminDbContext : IdentityDbContext<UserIdentity, UserIdentityRole, Guid, UserIdentityUserClaim, UserIdentityUserRole, UserIdentityUserLogin, UserIdentityRoleClaim, UserIdentityUserToken>,
         IAdminConfigurationDbContext, IAdminLogDbContext, IAdminPersistedGrantIdentityDbContext
 
@@ -100,7 +105,7 @@ New:
 
 Original:
 
-
+::
     public class GrantController : BaseController
     {
         private readonly IPersistedGrantService<AdminDbContext, UserIdentity, UserIdentityRole, int, UserIdentityUserClaim, UserIdentityUserRole, UserIdentityUserLogin, UserIdentityRoleClaim, UserIdentityUserToken> _persistedGrantService;
@@ -117,6 +122,7 @@ Original:
 
 New:
 
+::
     public class GrantController : BaseController
     {
         private readonly IPersistedGrantService<AdminDbContext, UserIdentity, UserIdentityRole, Guid, UserIdentityUserClaim, UserIdentityUserRole, UserIdentityUserLogin, UserIdentityRoleClaim, UserIdentityUserToken> _persistedGrantService;
@@ -135,6 +141,7 @@ New:
 
 Original:
 
+::
     public class IdentityController : BaseIdentityController<AdminDbContext, UserDto<int>, int, RoleDto<int>, int, int, int, UserIdentity, UserIdentityRole, int, UserIdentityUserClaim, UserIdentityUserRole, UserIdentityUserLogin, UserIdentityRoleClaim, UserIdentityUserToken>
     {
         public IdentityController(IIdentityService<AdminDbContext, UserDto<int>, int, RoleDto<int>, int, int, int, UserIdentity, UserIdentityRole, int, UserIdentityUserClaim, UserIdentityUserRole, UserIdentityUserLogin, UserIdentityRoleClaim, UserIdentityUserToken> identityService, ILogger<ConfigurationController> logger, IStringLocalizer<IdentityController> localizer)
@@ -145,6 +152,7 @@ Original:
 
 New:
 
+::
     public class IdentityController : BaseIdentityController<AdminDbContext, UserDto<Guid>, Guid, RoleDto<Guid>, Guid, Guid, Guid, UserIdentity, UserIdentityRole, Guid, UserIdentityUserClaim, UserIdentityUserRole, UserIdentityUserLogin, UserIdentityRoleClaim, UserIdentityUserToken>
     {
         public IdentityController(IIdentityService<AdminDbContext, UserDto<Guid>, Guid, RoleDto<Guid>, Guid, Guid, Guid, UserIdentity, UserIdentityRole, Guid, UserIdentityUserClaim, UserIdentityUserRole, UserIdentityUserLogin, UserIdentityRoleClaim, UserIdentityUserToken> identityService, ILogger<ConfigurationController> logger, IStringLocalizer<IdentityController> localizer)

@@ -6,12 +6,14 @@ EF Core & Data Access
 
 - Run entity framework migrations - for instance from Visual Studio command line (Nuget package manager):
 
+::
     Add-Migration DbInit -context AdminDbContext -output Data/Migrations
     Update-Database -context AdminDbContext
 
 
 - Or via ``dotnet CLI``:
 
+::
     dotnet ef migrations add DbInit -c AdminDbContext -o Data/Migrations
     dotnet ef database update -c AdminDbContext
 

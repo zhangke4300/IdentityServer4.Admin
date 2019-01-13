@@ -5,7 +5,7 @@ Changing database engine
 Create the migration of database
 --------------------------------
 
-
+::
     Add-Migration Initial -context AdminDbContext -output Data/Migrations
     Update-Database -context AdminDbContext
 
@@ -18,12 +18,13 @@ Using other database engines
 
 Install following NuGet package:
 
-
+::
     Npgsql.EntityFrameworkCore.PostgreSQL.Design
 
 
 Find ``RegisterDbContexts`` function in ``Helpers\StartupHelpers.cs``
 
+::
     services.AddDbContext<AdminDbContext>(options => options.UseSqlServer(configuration.GetConnectionString(ConfigurationConsts.AdminConnectionStringKey), optionsSql => optionsSql.MigrationsAssembly(migrationsAssembly)));
 
 and change  ``UseSqlServer`` to ``UseNpgsql``.
@@ -36,12 +37,13 @@ and change  ``UseSqlServer`` to ``UseNpgsql``.
 
 Install following NuGet package:
 
-
+::
     Microsoft.EntityFrameworkCore.Sqlite.Design
 
 
 Find ``RegisterDbContexts`` function in ``Helpers\StartupHelpers.cs``
 
+::
     services.AddDbContext<AdminDbContext>(options => options.UseSqlServer(configuration.GetConnectionString(ConfigurationConsts.AdminConnectionStringKey), optionsSql => optionsSql.MigrationsAssembly(migrationsAssembly)));
 
 
@@ -54,12 +56,13 @@ and change  ``UseSqlServer`` to ``UseSqlite``.
 
 Install the following NuGet package:
 
+::
     Pomelo.EntityFrameworkCore.MySql
 
 
 Find ``RegisterDbContexts`` function in ``Helpers\StartupHelpers.cs``
 
-
+::
     services.AddDbContext<AdminDbContext>(options => options.UseSqlServer(configuration.GetConnectionString(ConfigurationConsts.AdminConnectionStringKey), optionsSql => optionsSql.MigrationsAssembly(migrationsAssembly)));
 
 
@@ -67,7 +70,7 @@ and change  ``UseSqlServer`` to ``UseMySql``.
 
 Find ``Properties`` in ``Skoruba.IdentityServer4.Admin.EntityFramework\Entities\Log.cs``
 
-
+::
     [Column(TypeName = "xml")]
     public string Properties { get; set; }
 

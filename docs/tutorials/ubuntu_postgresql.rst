@@ -13,7 +13,7 @@ Prerequisites
 
 Instructions from: https://dotnet.microsoft.com/download/linux-package-manager/ubuntu18-04/sdk-2.2.101
 
-
+::
     wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
     sudo dpkg -i packages-microsoft-prod.deb
 
@@ -27,12 +27,14 @@ Instructions from: https://dotnet.microsoft.com/download/linux-package-manager/u
 
 Instructions from: https://linuxize.com/post/how-to-install-postgresql-on-ubuntu-18-04/
 
+::
     sudo apt update
     sudo apt install postgresql postgresql-contrib
 
 
 Throughout tutorial we will use PostgreSQL running on localhost and default port 5432 with username/password combination postgres/postgres. You can update connection strings with your own or if you want to follow everything exactly then after installing PostgreSQL you will need to change password of `postgres` user:
 
+::
     sudo -u postgres psql
     ALTER USER postgre WITH PASSWORD 'postgres';
 
@@ -44,6 +46,7 @@ Console commands will be used throghout the tutorial but for code editing it is 
 Cloning Admin
 -------------
 
+::
     git clone https://github.com/skoruba/IdentityServer4.Admin
 
 
@@ -55,6 +58,7 @@ By default everything is configured for Microsoft SQL Server, but fortunately it
 **Replace connection strings**
 First change connection strings in ``src/Skoruba.IdentityServer4.Admin/appsettings.json`` and  ``src/Skoruba.IdentityServer4.STS.Identity/appsettings.json`` and replace them with following connection string:
 
+::
     Server=localhost; User Id=postgres; Database=is4admin; Port=5432; Password=postgres; SSL Mode=Prefer; Trust Server Certificate=true
 
 
@@ -62,6 +66,7 @@ First change connection strings in ``src/Skoruba.IdentityServer4.Admin/appsettin
 
 Next we need to install PostgreSQL support for EntityFramework Core in Skoruba.IdentityServer4.Admin and Skoruba.IdentityServer4.STS.Identity in order to do that run in each project's directory:
 
+::
     dotnet add src/Skoruba.IdentityServer4.Admin package Npgsql.EntityFrameworkCore.PostgreSQL
     dotnet add src/Skoruba.IdentityServer4.Admin package Npgsql.EntityFrameworkCore.PostgreSQL.Design
     dotnet add src/Skoruba.IdentityServer4.STS.Identity package Npgsql.EntityFrameworkCore.PostgreSQL
@@ -76,7 +81,7 @@ Final setup
 
 **Generate initial migrations **
 
-
+::
     dotnet ef migrations add DbInit -c AdminDbContext -o Data/Migrations
     dotnet ef database update -c AdminDbContext
 
@@ -84,10 +89,12 @@ Final setup
 
 First run STS in ``src/Skoruba.IdentityServer4.STS.Identity`` launch:
 
+::
     dotnet run
 
 Admin also needs to seed the database so seperate terminal in ``src/Skoruba.IdentityServer4.Admin`` we add additional seed parameter:
 
+::
     dotnet run /seed
 
 After that we should have STS listening on http://localhost:5000 and Admin on http://localhost:9000.  We can go to the latter and we should be redirected to our STS for authentication (admin/Pa$$word123 is the default combination).

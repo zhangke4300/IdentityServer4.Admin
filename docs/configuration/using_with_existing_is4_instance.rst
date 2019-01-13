@@ -7,6 +7,7 @@ How to use existing IdentityServer4 instance
 
 1. Single DbContext:
 
+::
     services.AddAdminServices<AdminDbContext>();
 
 
@@ -18,7 +19,7 @@ How to use existing IdentityServer4 instance
 
 - It is possible to overload this method:
 
-
+::
     services.AddAdminServices<TConfigurationDbContext, TPersistedGrantDbContext, TLogDbContext>();
 
 

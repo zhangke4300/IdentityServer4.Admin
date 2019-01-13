@@ -4,11 +4,12 @@ Overview
 Solution structure
 ------------------
 
-STS
+**STS**
 
 ``Skoruba.IdentityServer4.STS.Identity``
     Quickstart UI for the IdentityServer4 with Asp.Net Core Identity and EF Core storage
-Admin UI
+
+**Admin UI**
 
 ``Skoruba.IdentityServer4.Admin``
     ASP.NET Core MVC application that contains Admin UI
@@ -31,7 +32,7 @@ Admin UI
 ``Skoruba.IdentityServer4.Admin.EntityFramework.DbContexts``
     project that contains AdminDbContext for the administration
 
-Tests
+**Tests**
 
 ``Skoruba.IdentityServer4.Admin.IntegrationTests``
     xUnit project that contains the integration tests
@@ -84,7 +85,8 @@ It is possible to define the configuration according the client type - by defaul
 - Entities:
   - Identity Claims
 
-## Asp.Net Core Identity
+Asp.Net Core Identity
+---------------------
 
 **Users**
 
@@ -132,8 +134,7 @@ Tests
 -----
 
 - The solution contains unit and integration tests.
-- **Stage environment is used for integration tests**:
-
+- Stage environment is used for integration tests
   - ``DbContext`` contains setup for InMemory database
   - ``Authentication`` is setup for ``CookieAuthentication`` - with fake login url only for testing purpose
   - ``AuthenticatedTestRequestMiddleware`` - middleware for testing of authentication.
