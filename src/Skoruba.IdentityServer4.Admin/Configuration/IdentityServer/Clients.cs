@@ -3,7 +3,6 @@ using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 using Skoruba.IdentityServer4.Admin.Configuration.Constants;
-using Skoruba.IdentityServer4.Admin.Configuration.Interfaces;
 
 namespace Skoruba.IdentityServer4.Admin.Configuration.IdentityServer
 
@@ -11,7 +10,7 @@ namespace Skoruba.IdentityServer4.Admin.Configuration.IdentityServer
     public class Clients
     {
 
-        public static IEnumerable<Client> GetAdminClient(IAdminConfiguration adminConfiguration)
+        public static IEnumerable<Client> GetAdminClient(AdminConfiguration adminConfiguration)
         {
 
             return new List<Client>
