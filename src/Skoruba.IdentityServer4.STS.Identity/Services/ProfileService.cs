@@ -2,6 +2,7 @@
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
+using Skoruba.IdentityServer4.Admin.EntityFramework.Shared.DbContexts;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Entities.Identity;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,14 @@ namespace Skoruba.IdentityServer4.STS.Identity.Services
     {
         private readonly IUserClaimsPrincipalFactory<UserIdentity> _claimsFactory;
         private readonly UserManager<UserIdentity> _userManager;
+        private readonly AdminIdentityDbContext _adminIdentityDbContext;
 
-        public ProfileService(UserManager<UserIdentity> userManager, IUserClaimsPrincipalFactory<UserIdentity> claimsFactory)
+        public ProfileService(UserManager<UserIdentity> userManager
+            , AdminIdentityDbContext adminIdentityDbContext
+            , IUserClaimsPrincipalFactory<UserIdentity> claimsFactory)
         {
             _userManager = userManager;
+            _adminIdentityDbContext = adminIdentityDbContext;
             _claimsFactory = claimsFactory;
         }
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
@@ -30,9 +35,31 @@ namespace Skoruba.IdentityServer4.STS.Identity.Services
             var claims = principal.Claims.ToList();
             claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
 
-            // Add custom claims in token here based on user properties or any other source
-            claims.Add(new Claim("employee_id", "123" ?? string.Empty));
+            var roleClaims = await getClaimValues(user);
+            if (roleClaims.Count() > 0)
+            {
+                var permissions = roleClaims?.Aggregate("", (s, permission) => s + (char)((ushort)permission / 256) + (char)((ushort)permission % 256));
+                // Add custom claims in token here based on user properties or any other source
+                claims.Add(new Claim("pemissons", permissions ?? string.Empty));
+            }
             context.IssuedClaims = claims;
+        }
+
+        /// <summary>
+        /// 获取角色权限
+        /// </summary>
+        /// <returns></returns>
+        private async Task<IEnumerable<ushort>> getClaimValues(UserIdentity user)
+        {
+            var queryRoleClaims = from ur in _adminIdentityDbContext.UserRoles where ur.UserId == user.Id
+                                  join rc in _adminIdentityDbContext.RoleClaims on ur.RoleId equals rc.RoleId
+                                  select rc.ClaimValue;
+            return await Task.FromResult(queryRoleClaims.ToList().Select(c => TryParse(c)).Distinct());
+        }
+
+        private ushort TryParse(string claimValue)
+        {
+            return ushort.TryParse(claimValue, out ushort cr) ? cr : (ushort)0;
         }
 
         public async Task IsActiveAsync(IsActiveContext context)

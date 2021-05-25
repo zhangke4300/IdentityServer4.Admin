@@ -9,6 +9,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Skoruba.IdentityServer4.Admin.BusinessLogic.Shared.ExceptionHandling;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Extensions.Common;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Extensions.Enums;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Extensions.Extensions;
@@ -182,7 +183,7 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Identity.Repositories
         /// <param name="user"></param>
         /// <returns>This method returns identity result and new user id</returns>
         public virtual async Task<(IdentityResult identityResult, TKey userId)> CreateUserAsync(TUser user)
-        {
+        {            
             var identityResult = await UserManager.CreateAsync(user);
 
             return (identityResult, user.Id);
@@ -320,12 +321,30 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Identity.Repositories
 
         public virtual async Task<IdentityResult> CreateRoleClaimsAsync(TRoleClaim claims)
         {
+            var exist = await DbContext.Set<TRoleClaim>().Where(x => x.ClaimValue == claims.ClaimValue).SingleOrDefaultAsync();
+            
+            if (exist != null)
+            {
+                if (exist.RoleId.ToString() == claims.RoleId.ToString())
+                    throw new UserFriendlyErrorPageException($"当前角色已经存在该ClaimValue：{claims.ClaimValue}");
+                else if (exist.ClaimType != claims.ClaimType)
+                    throw new UserFriendlyErrorPageException($"ClaimValue相同的情况，但ClaimType值不同");
+            }
             var role = await RoleManager.FindByIdAsync(claims.RoleId.ToString());
             return await RoleManager.AddClaimAsync(role, new Claim(claims.ClaimType, claims.ClaimValue));
         }
 
         public virtual async Task<IdentityResult> UpdateRoleClaimsAsync(TRoleClaim claims)
         {
+            //排除自己查询
+            var exist = await DbContext.Set<TRoleClaim>().Where(x => x.ClaimValue == claims.ClaimValue && x.Id != claims.Id).SingleOrDefaultAsync();
+            if (exist != null)
+            {
+                if (exist.RoleId.ToString() == claims.RoleId.ToString())
+                    throw new UserFriendlyErrorPageException($"当前角色已经存在该ClaimValue：{claims.ClaimValue}");
+                else if (exist.ClaimType != claims.ClaimType)
+                    throw new UserFriendlyErrorPageException($"ClaimValue相同的情况，但ClaimType值不同");
+            }
             var role = await RoleManager.FindByIdAsync(claims.RoleId.ToString());
             var userClaim = await DbContext.Set<TUserClaim>().Where(x => x.Id == claims.Id).SingleOrDefaultAsync();
 

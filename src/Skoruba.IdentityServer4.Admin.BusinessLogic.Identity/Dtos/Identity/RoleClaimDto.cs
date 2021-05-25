@@ -11,6 +11,6 @@ namespace Skoruba.IdentityServer4.Admin.BusinessLogic.Identity.Dtos.Identity
 
 
         [Required]
-        public string ClaimValue { get; set; }
+        public ushort ClaimValue { get; set; }
     }
 }

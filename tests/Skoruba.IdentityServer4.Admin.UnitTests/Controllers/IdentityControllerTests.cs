@@ -448,7 +448,7 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Controllers
             var viewResult = Assert.IsType<RedirectToActionResult>(result);
             viewResult.ActionName.Should().Be("RoleClaims");
 
-            var roleClaim = await dbContext.RoleClaims.Where(x => x.ClaimValue == roleClaimsDto.ClaimValue).SingleOrDefaultAsync();
+            var roleClaim = await dbContext.RoleClaims.Where(x => x.ClaimValue == roleClaimsDto.ClaimValue.ToString()).SingleOrDefaultAsync();
 
             var addedRoleClaim = await identityService.GetRoleClaimAsync(role.Id.ToString(), roleClaim.Id);
 

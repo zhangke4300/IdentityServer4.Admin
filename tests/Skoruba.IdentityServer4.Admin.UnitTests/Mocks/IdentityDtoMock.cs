@@ -121,7 +121,7 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Mocks
         {
             var roleClaimFaker = new Faker<RoleClaimsDto<RoleClaimDto<TKey>, TKey>>()
                 .RuleFor(o => o.ClaimType, f => Guid.NewGuid().ToString())
-                .RuleFor(o => o.ClaimValue, f => Guid.NewGuid().ToString())
+                .RuleFor(o => o.ClaimValue, f => new Random().Next())
                 .RuleFor(o => o.RoleId, roleId)
                 .RuleFor(o => o.ClaimId, id);
 
