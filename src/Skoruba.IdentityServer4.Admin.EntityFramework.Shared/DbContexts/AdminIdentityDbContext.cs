@@ -7,6 +7,7 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.DbContexts
 {
     public class AdminIdentityDbContext : IdentityDbContext<UserIdentity, UserIdentityRole, string, UserIdentityUserClaim, UserIdentityUserRole, UserIdentityUserLogin, UserIdentityRoleClaim, UserIdentityUserToken>
     {
+        public DbSet<HierarchyBase> HierarchyBases { get; set; }
         public AdminIdentityDbContext(DbContextOptions<AdminIdentityDbContext> options) : base(options)
         {
             
@@ -29,6 +30,7 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.DbContexts
             builder.Entity<UserIdentityUserLogin>().ToTable(TableConsts.IdentityUserLogins);
             builder.Entity<UserIdentityUserClaim>().ToTable(TableConsts.IdentityUserClaims);
             builder.Entity<UserIdentityUserToken>().ToTable(TableConsts.IdentityUserTokens);
+            builder.Entity<HierarchyBase>().ToTable(TableConsts.IdentityHierarchyBase);
         }
     }
 }

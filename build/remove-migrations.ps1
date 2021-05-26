@@ -26,6 +26,7 @@ $dpProviders = @{
 Write-Host "Updating donet ef tools"
 #$env:Path += "	% USERPROFILE % \.dotnet\tools";
 dotnet tool update --global dotnet-ef
+Write-Host "env:" $env
 
 Write-Host "Start migrate projects"
 foreach ($provider in $dpProviders.Keys) {
@@ -44,8 +45,11 @@ foreach ($provider in $dpProviders.Keys) {
                 
                 if ($targetContext -eq 'All' -or $context -eq $targetContext) {
 
+                    $migrationPath = $targetContexts[$context];
+
                     Write-Host "Migrating context " $context
-                    dotnet ef database update $migration -c $context -p $projectPath
+	    #Write-Host "dotnet ef migrations add " $migration "-c" $context "-o" $migrationPath "-p" $projectPath
+                    dotnet ef migrations remove -c $context -p $projectPath
                 }
             } 
         }

@@ -24,8 +24,9 @@ $dpProviders = @{
 
 #Fix issue when the tools is not installed and the nuget package does not work see https://github.com/MicrosoftDocs/azure-docs/issues/40048
 Write-Host "Updating donet ef tools"
-$env:Path += "	% USERPROFILE % \.dotnet\tools";
+#$env:Path += "	% USERPROFILE % \.dotnet\tools";
 dotnet tool update --global dotnet-ef
+Write-Host "env:" $env
 
 Write-Host "Start migrate projects"
 foreach ($provider in $dpProviders.Keys) {
@@ -47,6 +48,7 @@ foreach ($provider in $dpProviders.Keys) {
                     $migrationPath = $targetContexts[$context];
 
                     Write-Host "Migrating context " $context
+	    Write-Host "dotnet ef migrations add " $migration "-c" $context "-o" $migrationPath "-p" $projectPath
                     dotnet ef migrations add $migration -c $context -o $migrationPath -p $projectPath
                 }
             } 
