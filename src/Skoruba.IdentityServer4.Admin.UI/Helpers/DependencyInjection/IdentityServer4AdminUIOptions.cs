@@ -64,6 +64,7 @@ namespace Microsoft.Extensions.DependencyInjection
 		/// Identity data to seed the databases.
 		/// </summary>
 		public IdentityData IdentityData { get; set; } = new IdentityData();
+		public HierarchyData HierarchyData { get; set; } = new HierarchyData();
 
 		/// <summary>
 		/// Identity server data to seed the databases.
@@ -105,6 +106,7 @@ namespace Microsoft.Extensions.DependencyInjection
 			configuration.GetSection(nameof(HttpConfiguration)).Bind(Http);
 			configuration.GetSection(nameof(IdentityServerData)).Bind(IdentityServerData);
 			configuration.GetSection(nameof(IdentityData)).Bind(IdentityData);
+			configuration.GetSection(nameof(HierarchyData)).Bind(HierarchyData);
 		}
 	}
 }

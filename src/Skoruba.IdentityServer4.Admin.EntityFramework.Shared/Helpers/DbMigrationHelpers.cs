@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Skoruba.AuditLogging.EntityFramework.DbContexts;
 using Skoruba.AuditLogging.EntityFramework.Entities;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Configuration.Configuration;
+using Skoruba.IdentityServer4.Admin.EntityFramework.Entities;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Interfaces;
 
 namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Helpers
@@ -31,7 +32,7 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Helpers
             IHost host, bool applyDbMigrationWithDataSeedFromProgramArguments, SeedConfiguration seedConfiguration,
             DatabaseMigrationsConfiguration databaseMigrationsConfiguration)
             where TIdentityServerDbContext : DbContext, IAdminConfigurationDbContext
-            where TIdentityDbContext : DbContext
+            where TIdentityDbContext : DbContext, IAdminIdentityDbContext
             where TPersistedGrantDbContext : DbContext, IAdminPersistedGrantDbContext
             where TLogDbContext : DbContext, IAdminLogDbContext
             where TAuditLogDbContext : DbContext, IAuditLoggingDbContext<AuditLog>
@@ -52,7 +53,7 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Helpers
                 if ((seedConfiguration != null && seedConfiguration.ApplySeed)
                     || (applyDbMigrationWithDataSeedFromProgramArguments))
                 {
-                    await EnsureSeedDataAsync<TIdentityServerDbContext, TUser, TRole>(services);
+                    await EnsureSeedDataAsync<TIdentityDbContext,TIdentityServerDbContext, TUser, TRole>(services);
                 }
             }
         }
@@ -99,7 +100,8 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Helpers
             }
         }
 
-        public static async Task EnsureSeedDataAsync<TIdentityServerDbContext, TUser, TRole>(IServiceProvider serviceProvider)
+        public static async Task EnsureSeedDataAsync<TIdentityDbContext,TIdentityServerDbContext, TUser, TRole>(IServiceProvider serviceProvider)
+        where TIdentityDbContext : DbContext, IAdminIdentityDbContext
         where TIdentityServerDbContext : DbContext, IAdminConfigurationDbContext
         where TUser : IdentityUser, new()
         where TRole : IdentityRole, new()
@@ -107,12 +109,15 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Helpers
             using (var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<TIdentityServerDbContext>();
+                var contextIdentity = scope.ServiceProvider.GetRequiredService<TIdentityDbContext>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<TUser>>();
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<TRole>>();
                 var idsDataConfiguration = scope.ServiceProvider.GetRequiredService<IdentityServerData>();
                 var idDataConfiguration = scope.ServiceProvider.GetRequiredService<IdentityData>();
+                var hdDataConfiguration = scope.ServiceProvider.GetRequiredService<HierarchyData>();
 
                 await EnsureSeedIdentityServerData(context, idsDataConfiguration);
+                await EnsureSeedHierarchyData(contextIdentity, hdDataConfiguration);
                 await EnsureSeedIdentityData(userManager, roleManager, idDataConfiguration);
             }
         }
@@ -186,6 +191,85 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Helpers
                 }
             }
         }
+
+
+        private static async Task EnsureSeedHierarchyData<TIdentityDbContext>(TIdentityDbContext context, HierarchyData hierarchyData)
+            where TIdentityDbContext : DbContext, IAdminIdentityDbContext
+        {
+            if (context.HierarchyBases.Count() > 0)
+                return;
+            string getKeyId(HierarchyBase hierarchy)
+            {
+                if (hierarchy == null)
+                    return (context.HierarchyBases.Where(o => !o.Pid.HasValue).Count() + 1).ToString();
+                else
+                    return (context.HierarchyBases.Where(o => o.Pid == hierarchy.ID).Select(o => o.Name).Distinct().Count() + 1).ToString();
+            }
+            HierarchyBase getHierarchyDataModel(string name, HierarchyBase hierarchy)
+            {
+                if (hierarchy != null)
+                {
+                    if (name.Contains(","))
+                    {
+                        foreach (string item in name.Split(","))
+                        {
+                            var exist = context.HierarchyBases.Where(o => o.Parent.ID == hierarchy.ID && o.Name == item.Trim()).FirstOrDefault();
+                            if (exist != null) continue;
+                            var entity = context.HierarchyBases.Add(new HierarchyBase()
+                            {
+                                Name = item.Trim(),
+                                Pid = hierarchy.ID,
+                                Description = item.Trim(),
+                                DataKey = $"{hierarchy.DataKey}{getKeyId(hierarchy)}|"
+                            }).Entity;
+                            context.SaveChanges();
+                        }
+                        //包含<,>，表示有多个平级，默认为末级，返回null，跳出循环
+                        return null;
+                    }
+                    else
+                    {
+                        var exist = context.HierarchyBases.Where(o => o.Parent.ID == hierarchy.ID && o.Name == name.Trim()).FirstOrDefault();
+                        if (exist != null) return exist;
+                        var entity = context.HierarchyBases.Add(new HierarchyBase()
+                        {
+                            Name = name.Trim(),
+                            Pid = hierarchy.ID,
+                            Description = name.Trim(),
+                            DataKey = $"{hierarchy.DataKey}{getKeyId(hierarchy)}|"
+                        }).Entity;
+                        context.SaveChanges();
+                        return entity;
+                    }                    
+                }
+                else
+                {
+                    var exist = context.HierarchyBases.Where(o => !o.Pid.HasValue && o.Name == name).FirstOrDefault();
+                    if (exist != null) return exist;
+                    var entity = context.HierarchyBases.Add(new HierarchyBase()
+                    {
+                        Name = name.Trim(),
+                        Description = name.Trim(),
+                        DataKey = $"{getKeyId(null)}|"
+                    }).Entity;
+                    context.SaveChanges();
+                    return entity;
+                }
+            }
+            foreach (var branch in hierarchyData.Branchs)
+            {
+                var hierarchNames = branch.Split('|');
+                HierarchyBase parent = null;
+                foreach(var name in hierarchNames)
+                {
+                    parent = getHierarchyDataModel(name, parent);
+                    if (parent == null) break;
+                }
+                
+            }
+            await Task.CompletedTask;
+        }
+
 
         /// <summary>
         /// Generate default clients, identity and api resources

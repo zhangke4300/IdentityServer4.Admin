@@ -110,6 +110,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton(options.Admin);
             services.AddSingleton(options.IdentityServerData);
             services.AddSingleton(options.IdentityData);
+            services.AddSingleton(options.HierarchyData);
 
             // Add DbContexts for Asp.Net Core Identity, Logging and IdentityServer - Configuration store and Operational store
             if (!options.Testing.IsStaging)

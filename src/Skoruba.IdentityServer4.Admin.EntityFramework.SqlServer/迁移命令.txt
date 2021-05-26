@@ -1,0 +1,1 @@
+﻿.\add-migrations.ps1 -migration DbInit -migrationProviderName SqlServer -targetContext AdminIdentityDbContext

@@ -10,8 +10,8 @@ using Skoruba.IdentityServer4.Admin.EntityFramework.Shared.DbContexts;
 namespace Skoruba.IdentityServer4.Admin.EntityFramework.SqlServer.Migrations.Identity
 {
     [DbContext(typeof(AdminIdentityDbContext))]
-    [Migration("20210526081913_add-hierachy")]
-    partial class addhierachy
+    [Migration("20210526122320_DbInit")]
+    partial class DbInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.SqlServer.Migrations.Ide
 
             modelBuilder.Entity("Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Entities.Identity.HierarchyBase", b =>
                 {
-                    b.Property<int>("DataId")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -31,15 +31,18 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.SqlServer.Migrations.Ide
                     b.Property<string>("DataKey")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ParentId")
+                    b.Property<int?>("Pid")
                         .HasColumnType("int");
 
-                    b.HasKey("DataId");
+                    b.HasKey("ID");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("Pid");
 
                     b.ToTable("HierarchyBases");
                 });
@@ -243,8 +246,8 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.SqlServer.Migrations.Ide
             modelBuilder.Entity("Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Entities.Identity.HierarchyBase", b =>
                 {
                     b.HasOne("Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Entities.Identity.HierarchyBase", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId");
+                        .WithMany("Childs")
+                        .HasForeignKey("Pid");
 
                     b.Navigation("Parent");
                 });
@@ -302,7 +305,7 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.SqlServer.Migrations.Ide
 
             modelBuilder.Entity("Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Entities.Identity.HierarchyBase", b =>
                 {
-                    b.Navigation("Children");
+                    b.Navigation("Childs");
                 });
 #pragma warning restore 612, 618
         }

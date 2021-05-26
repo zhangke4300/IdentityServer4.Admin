@@ -98,6 +98,7 @@ namespace Skoruba.IdentityServer4.Admin
                      configApp.AddJsonFile("serilog.json", optional: true, reloadOnChange: true);
                      configApp.AddJsonFile("identitydata.json", optional: true, reloadOnChange: true);
                      configApp.AddJsonFile("identityserverdata.json", optional: true, reloadOnChange: true);
+                     configApp.AddJsonFile("hierarchyData.json", optional: true, reloadOnChange: false);
 
                      var env = hostContext.HostingEnvironment;
 

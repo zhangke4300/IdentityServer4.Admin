@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Entities.Identity
+namespace Skoruba.IdentityServer4.Admin.EntityFramework.Entities
 {
     public interface IDataKey
     {

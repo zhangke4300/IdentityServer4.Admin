@@ -159,6 +159,17 @@
                         </div>
                     </div>
 
+                    <div class="form-group row">
+                        <label asp-for="Email" class="col-sm-3 col-form-label">
+                            @await Html.PartialAsync("User/Section/Label", "UserEmail")
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="email" required class="form-control" asp-for="Email" hidden>
+                            <div class="tree-container"></div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+
                     <!--Button-->
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">
@@ -181,3 +192,21 @@
         });
     </script>
 }
+
+<script src="~/dist/js/tree.min.js"></script>
+<script>
+    let data = [{ "id": "0", "text": "node-0", "children": [{ "id": "0-0", "text": "node-0-0", "children": [{ "id": "0-0-0", "text": "node-0-0-0" }, { "id": "0-0-1", "text": "node-0-0-1" }, { "id": "0-0-2", "text": "node-0-0-2" }] }, { "id": "0-1", "text": "node-0-1", "children": [{ "id": "0-1-0", "text": "node-0-1-0" }, { "id": "0-1-1", "text": "node-0-1-1" }, { "id": "0-1-2", "text": "node-0-1-2" }] }, { "id": "0-2", "text": "node-0-2", "children": [{ "id": "0-2-0", "text": "node-0-2-0" }, { "id": "0-2-1", "text": "node-0-2-1" }, { "id": "0-2-2", "text": "node-0-2-2" }] }] }, { "id": "1", "text": "node-1", "children": [{ "id": "1-0", "text": "node-1-0", "children": [{ "id": "1-0-0", "text": "node-1-0-0" }, { "id": "1-0-1", "text": "node-1-0-1" }, { "id": "1-0-2", "text": "node-1-0-2" }] }, { "id": "1-1", "text": "node-1-1", "children": [{ "id": "1-1-0", "text": "node-1-1-0" }, { "id": "1-1-1", "text": "node-1-1-1" }, { "id": "1-1-2", "text": "node-1-1-2" }] }, { "id": "1-2", "text": "node-1-2", "children": [{ "id": "1-2-0", "text": "node-1-2-0" }, { "id": "1-2-1", "text": "node-1-2-1" }, { "id": "1-2-2", "text": "node-1-2-2" }] }] }, { "id": "2", "text": "node-2", "children": [{ "id": "2-0", "text": "node-2-0", "children": [{ "id": "2-0-0", "text": "node-2-0-0" }, { "id": "2-0-1", "text": "node-2-0-1" }, { "id": "2-0-2", "text": "node-2-0-2" }] }, { "id": "2-1", "text": "node-2-1", "children": [{ "id": "2-1-0", "text": "node-2-1-0" }, { "id": "2-1-1", "text": "node-2-1-1" }, { "id": "2-1-2", "text": "node-2-1-2" }] }, { "id": "2-2", "text": "node-2-2", "children": [{ "id": "2-2-0", "text": "node-2-2-0" }, { "id": "2-2-1", "text": "node-2-2-1" }, { "id": "2-2-2", "text": "node-2-2-2" }] }] }]
+
+    let tree = new Tree('.tree-container', {
+        data: [{ id: '-1', text: 'root', children: data }],
+        closeDepth: 3,
+        loaded: function () {
+            this.values = ['0-0-0', '0-1-1'];
+            console.log(this.selectedNodes)
+            console.log(this.values)
+            this.disables = ['0-0-0', '0-0-1', '0-0-2']
+        },
+        onChange: function () {
+            console.log(this.values);
+        }
+    })</script>
