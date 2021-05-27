@@ -60,7 +60,7 @@
                             @await Html.PartialAsync("User/Section/Label", "UserUserName")
                         </label>
                         <div class="col-sm-9">
-                            <input type="text" required class="form-control" asp-for="UserName">
+                            <input type="text" required class="form-control" id="username" asp-for="UserName">
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
                     </div>
@@ -160,13 +160,25 @@
                     </div>
 
                     <div class="form-group row">
-                        <label asp-for="Email" class="col-sm-3 col-form-label">
-                            @await Html.PartialAsync("User/Section/Label", "UserEmail")
+                        <label asp-for="DataKey" class="col-sm-3 col-form-label">
+                            @await Html.PartialAsync("User/Section/Label", "DataKey")
+                        </label>
+                        <div class="col-sm-6">
+                            <input type="text" required class="form-control" asp-for="DataKey" id="dataKey" readonly>                            
+                        </div>
+                        <div class="col-sm-3">
+                            <select class="form-control" id="dataKeySelect" onchange="changeSelect(this.value)" >
+                                <option value="0" selected>可查看下级</option>
+                                <option value="1">仅仅自己</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">                         
                         </label>
                         <div class="col-sm-9">
-                            <input type="email" required class="form-control" asp-for="Email" hidden>
-                            <div class="tree-container"></div>
-                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <div class="tree-container"></div>                            
                         </div>
                     </div>
 
@@ -194,8 +206,7 @@
 }
 
 <script src="~/dist/js/tree.js"></script>
-<script>
-    //let data = [{ "id": "0", "text": "node-0", "children": [{ "id": "0-0", "text": "node-0-0", "children": [{ "id": "0-0-0", "text": "node-0-0-0" }, { "id": "0-0-1", "text": "node-0-0-1" }, { "id": "0-0-2", "text": "node-0-0-2" }] }, { "id": "0-1", "text": "node-0-1", "children": [{ "id": "0-1-0", "text": "node-0-1-0" }, { "id": "0-1-1", "text": "node-0-1-1" }, { "id": "0-1-2", "text": "node-0-1-2" }] }, { "id": "0-2", "text": "node-0-2", "children": [{ "id": "0-2-0", "text": "node-0-2-0" }, { "id": "0-2-1", "text": "node-0-2-1" }, { "id": "0-2-2", "text": "node-0-2-2" }] }] }, { "id": "1", "text": "node-1", "children": [{ "id": "1-0", "text": "node-1-0", "children": [{ "id": "1-0-0", "text": "node-1-0-0" }, { "id": "1-0-1", "text": "node-1-0-1" }, { "id": "1-0-2", "text": "node-1-0-2" }] }, { "id": "1-1", "text": "node-1-1", "children": [{ "id": "1-1-0", "text": "node-1-1-0" }, { "id": "1-1-1", "text": "node-1-1-1" }, { "id": "1-1-2", "text": "node-1-1-2" }] }, { "id": "1-2", "text": "node-1-2", "children": [{ "id": "1-2-0", "text": "node-1-2-0" }, { "id": "1-2-1", "text": "node-1-2-1" }, { "id": "1-2-2", "text": "node-1-2-2" }] }] }, { "id": "2", "text": "node-2", "children": [{ "id": "2-0", "text": "node-2-0", "children": [{ "id": "2-0-0", "text": "node-2-0-0" }, { "id": "2-0-1", "text": "node-2-0-1" }, { "id": "2-0-2", "text": "node-2-0-2" }] }, { "id": "2-1", "text": "node-2-1", "children": [{ "id": "2-1-0", "text": "node-2-1-0" }, { "id": "2-1-1", "text": "node-2-1-1" }, { "id": "2-1-2", "text": "node-2-1-2" }] }, { "id": "2-2", "text": "node-2-2", "children": [{ "id": "2-2-0", "text": "node-2-2-0" }, { "id": "2-2-1", "text": "node-2-2-1" }, { "id": "2-2-2", "text": "node-2-2-2" }] }] }]
+<script>    
     let tree = new Tree('.tree-container', {
         data: [@Html.Raw(@ViewData["Hierarchys"])],
         closeDepth: 3,
@@ -206,6 +217,23 @@
             //this.disables = ['0-0-0', '0-0-1', '0-0-2']
         },
         onChange: function () {
-            console.log(this.values);
+            setDataKey();
         }
-    })</script>
+    })
+    function setDataKey() {
+        tree.selectedNodes.forEach(node => {
+            if (node.status == '2') {
+                //console.log(node.dataKey);
+                if ($('#dataKeySelect option:selected').val() != "0") {
+                    $('#dataKey').val(node.dataKey + '-' + $('#username').val());
+                } else {
+                    $('#dataKey').val(node.dataKey);
+                }
+                //console.log($('#dataKeySelect option:selected').val())
+            }
+        });
+    }
+    function changeSelect(val) {
+        setDataKey();
+    }
+</script>

@@ -85,7 +85,8 @@ namespace Skoruba.IdentityServer4.STS.Identity
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.ConfigureKestrel(options => options.AddServerHeader = false);
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>()
+                    .UseUrls("https://localhost:44310");
                 })
                 .UseSerilog((hostContext, loggerConfig) =>
                 {

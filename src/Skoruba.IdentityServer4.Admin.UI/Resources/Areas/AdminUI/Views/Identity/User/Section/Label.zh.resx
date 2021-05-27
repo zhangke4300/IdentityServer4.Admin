@@ -183,6 +183,9 @@
   <data name="UserLockoutEnd_Label" xml:space="preserve">
     <value>用户锁定结束</value>
   </data>
+  <data name="DataKey_Label" xml:space="preserve">
+    <value>用户数据锁</value>
+  </data>
   <data name="UserPhoneNumberConfirmed_Info" xml:space="preserve">
     <value>用户手机号码已确认</value>
   </data>

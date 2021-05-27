@@ -474,7 +474,7 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Controllers
 
             var roleClaimsDto = IdentityDtoMock<string>.GenerateRandomRoleClaim(0, role.Id);
             await identityService.CreateRoleClaimsAsync(roleClaimsDto);
-            var newRoleClaim = await dbContext.RoleClaims.Where(x => x.ClaimValue == roleClaimsDto.ClaimValue).SingleOrDefaultAsync();
+            var newRoleClaim = await dbContext.RoleClaims.Where(x => x.ClaimValue == roleClaimsDto.ClaimValue.ToString()).SingleOrDefaultAsync();
             roleClaimsDto.ClaimId = newRoleClaim.Id;
 
             var result = await controller.RoleClaimsDelete(roleClaimsDto);
@@ -483,7 +483,7 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Controllers
             var viewResult = Assert.IsType<RedirectToActionResult>(result);
             viewResult.ActionName.Should().Be("RoleClaims");
 
-            var roleClaim = await dbContext.RoleClaims.Where(x => x.ClaimValue == roleClaimsDto.ClaimValue).SingleOrDefaultAsync();
+            var roleClaim = await dbContext.RoleClaims.Where(x => x.ClaimValue == roleClaimsDto.ClaimValue.ToString()).SingleOrDefaultAsync();
 
             roleClaim.Should().BeNull();
         }

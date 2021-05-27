@@ -12,6 +12,7 @@ namespace Skoruba.IdentityServer4.Admin.BusinessLogic.Identity.Dtos.Identity.Int
         bool LockoutEnabled { get; set; }
         bool TwoFactorEnabled { get; set; }
         int AccessFailedCount { get; set; }
+        string DataKey { get; set; }
         DateTimeOffset? LockoutEnd { get; set; }
     }
 }
