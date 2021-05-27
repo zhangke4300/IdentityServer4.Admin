@@ -2,6 +2,7 @@
 using Skoruba.IdentityServer4.Admin.Api.Dtos.Roles;
 using Skoruba.IdentityServer4.Admin.Api.Dtos.Users;
 using Skoruba.IdentityServer4.Admin.BusinessLogic.Identity.Dtos.Identity;
+using Skoruba.IdentityServer4.Admin.EntityFramework.Entities;
 
 namespace Skoruba.IdentityServer4.Admin.Api.Mappers
 {
@@ -41,6 +42,9 @@ namespace Skoruba.IdentityServer4.Admin.Api.Mappers
             CreateMap<TRoleClaimsDto, RoleClaimsApiDto<TKey>>(MemberList.Source);
             CreateMap<TRoleClaimDto, RoleClaimApiDto<TKey>>(MemberList.Destination);
             CreateMap<TRoleClaimsDto, RoleClaimApiDto<TKey>>(MemberList.Destination);
+
+            CreateMap<HierarchyDto, HierarchyBase>(MemberList.Source);
+            CreateMap<HierarchyBase, HierarchyDto>(MemberList.Destination);
         }
     }
 }

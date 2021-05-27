@@ -10,7 +10,7 @@ using Skoruba.IdentityServer4.Admin.EntityFramework.Shared.DbContexts;
 namespace Skoruba.IdentityServer4.Admin.EntityFramework.SqlServer.Migrations.Identity
 {
     [DbContext(typeof(AdminIdentityDbContext))]
-    [Migration("20210526122320_DbInit")]
+    [Migration("20210527044130_DbInit")]
     partial class DbInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,9 +21,9 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.SqlServer.Migrations.Ide
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Entities.Identity.HierarchyBase", b =>
+            modelBuilder.Entity("Skoruba.IdentityServer4.Admin.EntityFramework.Entities.HierarchyBase", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -34,13 +34,13 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.SqlServer.Migrations.Ide
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("Pid")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Pid");
 
@@ -243,10 +243,10 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.SqlServer.Migrations.Ide
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Entities.Identity.HierarchyBase", b =>
+            modelBuilder.Entity("Skoruba.IdentityServer4.Admin.EntityFramework.Entities.HierarchyBase", b =>
                 {
-                    b.HasOne("Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Entities.Identity.HierarchyBase", "Parent")
-                        .WithMany("Childs")
+                    b.HasOne("Skoruba.IdentityServer4.Admin.EntityFramework.Entities.HierarchyBase", "Parent")
+                        .WithMany("Children")
                         .HasForeignKey("Pid");
 
                     b.Navigation("Parent");
@@ -303,9 +303,9 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.SqlServer.Migrations.Ide
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Entities.Identity.HierarchyBase", b =>
+            modelBuilder.Entity("Skoruba.IdentityServer4.Admin.EntityFramework.Entities.HierarchyBase", b =>
                 {
-                    b.Navigation("Childs");
+                    b.Navigation("Children");
                 });
 #pragma warning restore 612, 618
         }

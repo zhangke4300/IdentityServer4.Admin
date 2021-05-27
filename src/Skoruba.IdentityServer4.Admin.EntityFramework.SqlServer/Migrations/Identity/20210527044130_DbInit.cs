@@ -11,21 +11,21 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.SqlServer.Migrations.Ide
                 name: "HierarchyBases",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Pid = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HierarchyBases", x => x.ID);
+                    table.PrimaryKey("PK_HierarchyBases", x => x.Id);
                     table.ForeignKey(
                         name: "FK_HierarchyBases_HierarchyBases_Pid",
                         column: x => x.Pid,
                         principalTable: "HierarchyBases",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 

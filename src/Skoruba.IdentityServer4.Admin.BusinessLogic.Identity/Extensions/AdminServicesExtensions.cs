@@ -34,7 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddAdminAspNetIdentityServices<TIdentityDbContext, TPersistedGrantDbContext, TUser>(
             this IServiceCollection services)
-            where TIdentityDbContext : IdentityDbContext<TUser, IdentityRole, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
+            where TIdentityDbContext : IdentityDbContext<TUser, IdentityRole, string, IdentityUserClaim<string>, IdentityUserRole<string>, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>, IAdminIdentityDbContext
             where TPersistedGrantDbContext : DbContext, IAdminPersistedGrantDbContext
             where TUser : IdentityUser
         {
@@ -53,7 +53,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 this IServiceCollection services)
             where TAdminDbContext :
             IdentityDbContext<TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TRoleClaim, TUserToken>,
-            IAdminPersistedGrantDbContext
+            IAdminPersistedGrantDbContext, IAdminIdentityDbContext
             where TUserDto : UserDto<TKey>
             where TUser : IdentityUser<TKey>
             where TRole : IdentityRole<TKey>
@@ -87,7 +87,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     TUserProviderDto, TUserProvidersDto, TUserChangePasswordDto, TRoleClaimsDto, TUserClaimDto, TRoleClaimDto>(
                         this IServiceCollection services)
             where TPersistedGrantDbContext : DbContext, IAdminPersistedGrantDbContext
-            where TIdentityDbContext : IdentityDbContext<TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TRoleClaim, TUserToken>
+            where TIdentityDbContext : IdentityDbContext<TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TRoleClaim, TUserToken>, IAdminIdentityDbContext
             where TUserDto : UserDto<TKey>
             where TUser : IdentityUser<TKey>
             where TRole : IdentityRole<TKey>
@@ -122,7 +122,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     TUserProviderDto, TUserProvidersDto, TUserChangePasswordDto, TRoleClaimsDto, TUserClaimDto, TRoleClaimDto>(
                         this IServiceCollection services, HashSet<Type> profileTypes)
             where TPersistedGrantDbContext : DbContext, IAdminPersistedGrantDbContext
-            where TIdentityDbContext : IdentityDbContext<TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TRoleClaim, TUserToken>
+            where TIdentityDbContext : IdentityDbContext<TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TRoleClaim, TUserToken>,IAdminIdentityDbContext
             where TUserDto : UserDto<TKey>
             where TUser : IdentityUser<TKey>
             where TRole : IdentityRole<TKey>

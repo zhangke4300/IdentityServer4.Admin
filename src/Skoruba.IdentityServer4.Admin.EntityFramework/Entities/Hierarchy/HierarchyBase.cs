@@ -4,8 +4,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-
-
+using System.Text.Json.Serialization;
 
 namespace Skoruba.IdentityServer4.Admin.EntityFramework.Entities
 {
@@ -16,20 +15,22 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Entities
     /// </summary>
     public class HierarchyBase : IDataKey
     {
-        public int ID { get; set; }       
+        public int Id { get; set; }       
 
         //描述  
-        public string Name { get; set; }
+        public string Text { get; set; }
 
         //描述
         public string Description { get; set; }
 
         //子级到父级的ID
         public string DataKey { get; set; }
+        [JsonIgnore]
         //父级ID
         public int? Pid { get; set; }
         [ForeignKey("Pid")]
+        [JsonIgnore]
         public virtual HierarchyBase Parent { get; set; }
-        public virtual ICollection<HierarchyBase> Childs { get; set; }
+        public virtual ICollection<HierarchyBase> Children { get; set; }
     }
 }

@@ -10,16 +10,18 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Skoruba.IdentityServer4.Admin.BusinessLogic.Shared.ExceptionHandling;
+using Skoruba.IdentityServer4.Admin.EntityFramework.Entities;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Extensions.Common;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Extensions.Enums;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Extensions.Extensions;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Identity.Repositories.Interfaces;
+using Skoruba.IdentityServer4.Admin.EntityFramework.Interfaces;
 
 namespace Skoruba.IdentityServer4.Admin.EntityFramework.Identity.Repositories
 {
     public class IdentityRepository<TIdentityDbContext, TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TRoleClaim, TUserToken>
         : IIdentityRepository<TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TRoleClaim, TUserToken>
-        where TIdentityDbContext : IdentityDbContext<TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TRoleClaim, TUserToken>
+        where TIdentityDbContext : IdentityDbContext<TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TRoleClaim, TUserToken>,IAdminIdentityDbContext
         where TUser : IdentityUser<TKey>
         where TRole : IdentityRole<TKey>
         where TKey : IEquatable<TKey>
@@ -418,6 +420,26 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Identity.Repositories
         public virtual async Task<int> SaveAllChangesAsync()
         {
             return await DbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<HierarchyBase>> GetHierarchyBases()
+        {
+            return await DbContext.HierarchyBases.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<HierarchyBase> GetHierarchyBaseInclude()
+        {
+            return await DbContext.HierarchyBases.Where(o => o.Pid == null)
+                    .Include(o => o.Children)
+                    .ThenInclude(o => o.Children)
+                    .ThenInclude(o => o.Children)
+                    .ThenInclude(o => o.Children).AsNoTracking().FirstOrDefaultAsync();
+        }
+
+        public Task UpdateHierarchyBases(HierarchyBase hierarchyBase)
+        {
+            DbContext.HierarchyBases.Update(hierarchyBase);
+            return Task.CompletedTask;
         }
     }
 }

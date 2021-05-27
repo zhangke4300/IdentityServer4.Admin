@@ -203,7 +203,7 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Helpers
                 if (hierarchy == null)
                     return (context.HierarchyBases.Where(o => !o.Pid.HasValue).Count() + 1).ToString();
                 else
-                    return (context.HierarchyBases.Where(o => o.Pid == hierarchy.ID).Select(o => o.Name).Distinct().Count() + 1).ToString();
+                    return (context.HierarchyBases.Where(o => o.Pid == hierarchy.Id).Select(o => o.Text).Distinct().Count() + 1).ToString();
             }
             HierarchyBase getHierarchyDataModel(string name, HierarchyBase hierarchy)
             {
@@ -213,12 +213,12 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Helpers
                     {
                         foreach (string item in name.Split(","))
                         {
-                            var exist = context.HierarchyBases.Where(o => o.Parent.ID == hierarchy.ID && o.Name == item.Trim()).FirstOrDefault();
+                            var exist = context.HierarchyBases.Where(o => o.Parent.Id == hierarchy.Id && o.Text == item.Trim()).FirstOrDefault();
                             if (exist != null) continue;
                             var entity = context.HierarchyBases.Add(new HierarchyBase()
                             {
-                                Name = item.Trim(),
-                                Pid = hierarchy.ID,
+                                Text = item.Trim(),
+                                Pid = hierarchy.Id,
                                 Description = item.Trim(),
                                 DataKey = $"{hierarchy.DataKey}{getKeyId(hierarchy)}|"
                             }).Entity;
@@ -229,12 +229,12 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Helpers
                     }
                     else
                     {
-                        var exist = context.HierarchyBases.Where(o => o.Parent.ID == hierarchy.ID && o.Name == name.Trim()).FirstOrDefault();
+                        var exist = context.HierarchyBases.Where(o => o.Parent.Id == hierarchy.Id && o.Text == name.Trim()).FirstOrDefault();
                         if (exist != null) return exist;
                         var entity = context.HierarchyBases.Add(new HierarchyBase()
                         {
-                            Name = name.Trim(),
-                            Pid = hierarchy.ID,
+                            Text = name.Trim(),
+                            Pid = hierarchy.Id,
                             Description = name.Trim(),
                             DataKey = $"{hierarchy.DataKey}{getKeyId(hierarchy)}|"
                         }).Entity;
@@ -244,11 +244,11 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Helpers
                 }
                 else
                 {
-                    var exist = context.HierarchyBases.Where(o => !o.Pid.HasValue && o.Name == name).FirstOrDefault();
+                    var exist = context.HierarchyBases.Where(o => !o.Pid.HasValue && o.Text == name).FirstOrDefault();
                     if (exist != null) return exist;
                     var entity = context.HierarchyBases.Add(new HierarchyBase()
                     {
-                        Name = name.Trim(),
+                        Text = name.Trim(),
                         Description = name.Trim(),
                         DataKey = $"{getKeyId(null)}|"
                     }).Entity;

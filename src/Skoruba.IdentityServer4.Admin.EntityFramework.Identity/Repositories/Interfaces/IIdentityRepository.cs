@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Skoruba.IdentityServer4.Admin.EntityFramework.Entities;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Extensions.Common;
 
 namespace Skoruba.IdentityServer4.Admin.EntityFramework.Identity.Repositories.Interfaces
@@ -85,5 +86,9 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Identity.Repositories.In
         bool AutoSaveChanges { get; set; }
 
         Task<int> SaveAllChangesAsync();
+
+        Task<List<HierarchyBase>> GetHierarchyBases();
+        Task<HierarchyBase> GetHierarchyBaseInclude();
+        Task UpdateHierarchyBases(HierarchyBase hierarchyBase);
     }
 }

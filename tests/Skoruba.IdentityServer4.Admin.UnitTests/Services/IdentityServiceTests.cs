@@ -554,7 +554,7 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Services
                 await identityService.CreateRoleClaimsAsync(roleClaimDto);
 
                 //Get new role claim
-                var roleClaim = await context.RoleClaims.Where(x => x.ClaimType == roleClaimDto.ClaimType && x.ClaimValue == roleClaimDto.ClaimValue).SingleOrDefaultAsync();
+                var roleClaim = await context.RoleClaims.Where(x => x.ClaimType == roleClaimDto.ClaimType && x.ClaimValue == roleClaimDto.ClaimValue.ToString()).SingleOrDefaultAsync();
                 roleClaimDto.ClaimId = roleClaim.Id;
 
                 var newRoleClaimDto = await identityService.GetRoleClaimAsync(roleDto.Id.ToString(), roleClaimDto.ClaimId);
@@ -591,7 +591,7 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Services
                 await identityService.CreateRoleClaimsAsync(roleClaimDto);
 
                 //Get new role claim
-                var roleClaim = await context.RoleClaims.Where(x => x.ClaimType == roleClaimDto.ClaimType && x.ClaimValue == roleClaimDto.ClaimValue).SingleOrDefaultAsync();
+                var roleClaim = await context.RoleClaims.Where(x => x.ClaimType == roleClaimDto.ClaimType && x.ClaimValue == roleClaimDto.ClaimValue.ToString()).SingleOrDefaultAsync();
                 roleClaimDto.ClaimId = roleClaim.Id;
 
                 var newRoleClaimDto = await identityService.GetRoleClaimAsync(roleDto.Id.ToString(), roleClaimDto.ClaimId);
@@ -601,7 +601,7 @@ namespace Skoruba.IdentityServer4.Admin.UnitTests.Services
 
                 await identityService.DeleteRoleClaimAsync(roleClaimDto);
 
-                var roleClaimToDelete = await context.RoleClaims.Where(x => x.ClaimType == roleClaimDto.ClaimType && x.ClaimValue == roleClaimDto.ClaimValue).SingleOrDefaultAsync();
+                var roleClaimToDelete = await context.RoleClaims.Where(x => x.ClaimType == roleClaimDto.ClaimType && x.ClaimValue == roleClaimDto.ClaimValue.ToString()).SingleOrDefaultAsync();
 
                 //Assert removed role claim
                 roleClaimToDelete.Should().BeNull();

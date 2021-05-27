@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -162,6 +163,12 @@ namespace Skoruba.IdentityServer4.Admin.UI.Areas.AdminUI.Controllers
         [HttpGet]
         public async Task<IActionResult> UserProfile(TKey id)
         {
+            var Hierarchys = await _identityService.GetHierarchyBaseInclude();
+            var serializeOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
+            ViewData["Hierarchys"] = JsonSerializer.Serialize(Hierarchys, serializeOptions);
             if (EqualityComparer<TKey>.Default.Equals(id, default))
             {
                 var newUser = new TUserDto();

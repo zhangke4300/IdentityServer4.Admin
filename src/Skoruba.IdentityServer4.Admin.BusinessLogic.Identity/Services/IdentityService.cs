@@ -12,6 +12,7 @@ using Skoruba.IdentityServer4.Admin.BusinessLogic.Identity.Resources;
 using Skoruba.IdentityServer4.Admin.BusinessLogic.Identity.Services.Interfaces;
 using Skoruba.IdentityServer4.Admin.BusinessLogic.Shared.Dtos.Common;
 using Skoruba.IdentityServer4.Admin.BusinessLogic.Shared.ExceptionHandling;
+using Skoruba.IdentityServer4.Admin.EntityFramework.Entities;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Extensions.Common;
 using Skoruba.IdentityServer4.Admin.EntityFramework.Identity.Repositories.Interfaces;
 
@@ -494,6 +495,24 @@ namespace Skoruba.IdentityServer4.Admin.BusinessLogic.Identity.Services
             await AuditEventLogger.LogEventAsync(new RoleDeletedEvent<TRoleDto>(role));
 
             return HandleIdentityError(identityResult, IdentityServiceResources.RoleDeleteFailed().Description, IdentityServiceResources.IdentityErrorKey().Description, role);
+        }
+
+        public async Task<List<HierarchyDto>> GetHierarchyBases()
+        {
+            var hierarchys = await IdentityRepository.GetHierarchyBases();
+            return Mapper.Map<List<HierarchyDto>>(hierarchys);
+        }        
+        
+        public async Task<HierarchyBase> GetHierarchyBaseInclude()
+        {
+            return await IdentityRepository.GetHierarchyBaseInclude();
+            
+        }
+
+        public Task UpdateHierarchyBases(HierarchyDto hierarchy)
+        {
+            var hierarchyDto = Mapper.Map<HierarchyBase>(hierarchy);
+            return  IdentityRepository.UpdateHierarchyBases(hierarchyDto);
         }
     }
 }
