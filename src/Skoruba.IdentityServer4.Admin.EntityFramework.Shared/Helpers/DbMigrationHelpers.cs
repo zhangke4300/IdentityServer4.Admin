@@ -250,7 +250,7 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Shared.Helpers
                     {
                         Text = name.Trim(),
                         Description = name.Trim(),
-                        DataKey = $"{getKeyId(null)}|"
+                        DataKey = $"|{getKeyId(null)}|"
                     }).Entity;
                     context.SaveChanges();
                     return entity;

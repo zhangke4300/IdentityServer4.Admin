@@ -38,10 +38,14 @@ namespace Skoruba.IdentityServer4.STS.Identity.Services
             var roleClaims = await getClaimValues(user);
             if (roleClaims.Count() > 0)
             {
-                var permissions = roleClaims?.Aggregate("", (s, permission) => s + (char)((ushort)permission / 256) + (char)((ushort)permission % 256));
+                var permissions = roleClaims?.Aggregate("", (s, permission) => s + permission);
                 // Add custom claims in token here based on user properties or any other source
                 claims.Add(new Claim("pemissons", permissions ?? string.Empty));
             }
+            if (claims.Where(c => c.Type == "超级管理员").Count() > 0)
+                claims.Add(new Claim("datakey", "|"));
+            else
+                claims.Add(new Claim("datakey", user.DataKey ?? string.Empty));
             context.IssuedClaims = claims;
         }
 
@@ -49,12 +53,12 @@ namespace Skoruba.IdentityServer4.STS.Identity.Services
         /// 获取角色权限
         /// </summary>
         /// <returns></returns>
-        private async Task<IEnumerable<ushort>> getClaimValues(UserIdentity user)
+        private async Task<IEnumerable<string>> getClaimValues(UserIdentity user)
         {
             var queryRoleClaims = from ur in _adminIdentityDbContext.UserRoles where ur.UserId == user.Id
                                   join rc in _adminIdentityDbContext.RoleClaims on ur.RoleId equals rc.RoleId
                                   select rc.ClaimValue;
-            return await Task.FromResult(queryRoleClaims.ToList().Select(c => TryParse(c)).Distinct());
+            return await Task.FromResult(queryRoleClaims.ToList().Distinct());
         }
 
         private ushort TryParse(string claimValue)

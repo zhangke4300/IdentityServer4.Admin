@@ -168,7 +168,7 @@
                         </div>
                         <div class="col-sm-3">
                             <select class="form-control" id="dataKeySelect" onchange="changeSelect(this.value)" >
-                                <option value="0" selected>可查看下级</option>
+                                <option value="0">可查看下级</option>
                                 <option value="1">仅仅自己</option>
                             </select>
                         </div>
@@ -223,11 +223,11 @@
     function setDataKey() {
         tree.selectedNodes.forEach(node => {
             if (node.status == '2') {
-                //console.log(node.dataKey);
-                if ($('#dataKeySelect option:selected').val() != "0") {
-                    $('#dataKey').val(node.dataKey + '-' + $('#username').val());
-                } else {
+                //all
+                if ($('#dataKeySelect option:selected').val() == "0") {
                     $('#dataKey').val(node.dataKey);
+                } else {
+                    $('#dataKey').val(node.dataKey + '-');
                 }
                 //console.log($('#dataKeySelect option:selected').val())
             }
@@ -236,4 +236,12 @@
     function changeSelect(val) {
         setDataKey();
     }
+    function setDataKeySelect() {
+        if ($('#dataKey').val().indexOf('*') >= 0) {
+            $("#dataKeySelect").val('0');
+        } else {
+            $("#dataKeySelect").val('1');
+        }
+    }
+    setDataKeySelect();
 </script>

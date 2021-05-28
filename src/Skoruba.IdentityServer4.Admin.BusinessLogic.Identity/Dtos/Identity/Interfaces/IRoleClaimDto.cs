@@ -3,6 +3,6 @@
     public interface IRoleClaimDto : IBaseRoleClaimDto
     {
         string ClaimType { get; set; }
-        ushort ClaimValue { get; set; }
+        string ClaimValue { get; set; }
     }
 }
