@@ -163,12 +163,12 @@ namespace Skoruba.IdentityServer4.Admin.UI.Areas.AdminUI.Controllers
         [HttpGet]
         public async Task<IActionResult> UserProfile(TKey id)
         {
-            var Hierarchys = await _identityService.GetHierarchyBaseInclude();
+            var hierarchys = await _identityService.GetHierarchyBaseInclude();
             var serializeOptions = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
-            ViewData["Hierarchys"] = JsonSerializer.Serialize(Hierarchys, serializeOptions);
+            ViewData["Hierarchys"] = JsonSerializer.Serialize(hierarchys, serializeOptions);
             if (EqualityComparer<TKey>.Default.Equals(id, default))
             {
                 var newUser = new TUserDto();
@@ -178,6 +178,8 @@ namespace Skoruba.IdentityServer4.Admin.UI.Areas.AdminUI.Controllers
 
             var user = await _identityService.GetUserAsync(id.ToString());
             if (user == null) return NotFound();
+
+            ViewData["hierarchyId"] = await _identityService.GetHierarchyIdByKey(user?.DataKey);
 
             return View("UserProfile", user);
         }

@@ -104,6 +104,7 @@ namespace Skoruba.IdentityServer4.Admin.BusinessLogic.Identity.Services.Interfac
 
         Task<List<HierarchyDto>> GetHierarchyBases();
         Task<HierarchyBase> GetHierarchyBaseInclude();
+        Task<int> GetHierarchyIdByKey(string dataKey);
         Task UpdateHierarchyBases(HierarchyDto hierarchy);
     }
 }

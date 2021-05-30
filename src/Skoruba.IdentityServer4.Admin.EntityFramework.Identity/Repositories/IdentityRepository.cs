@@ -441,5 +441,10 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Identity.Repositories
             DbContext.HierarchyBases.Update(hierarchyBase);
             return Task.CompletedTask;
         }
+
+        public async Task<HierarchyBase> GetHierarchyBaseByKey(string dataKey)
+        {
+            return await DbContext.HierarchyBases.Where(o => o.DataKey == dataKey).AsNoTracking().FirstOrDefaultAsync();
+        }
     }
 }

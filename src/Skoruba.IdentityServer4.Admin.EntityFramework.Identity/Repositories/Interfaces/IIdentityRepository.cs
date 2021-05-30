@@ -90,5 +90,6 @@ namespace Skoruba.IdentityServer4.Admin.EntityFramework.Identity.Repositories.In
         Task<List<HierarchyBase>> GetHierarchyBases();
         Task<HierarchyBase> GetHierarchyBaseInclude();
         Task UpdateHierarchyBases(HierarchyBase hierarchyBase);
+        Task<HierarchyBase> GetHierarchyBaseByKey(string dataKey);
     }
 }

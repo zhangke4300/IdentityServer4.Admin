@@ -29,5 +29,15 @@ namespace Skoruba.IdentityServer4.Admin.BusinessLogic.Identity.Dtos.Identity
 
         public DateTimeOffset? LockoutEnd { get; set; }
         public string DataKey { get; set; }
+
+        /// <summary>
+        /// 默认地址ID 
+        /// </summary>
+        public long? AddrId { get; set; }
+        public string LastIpAddress { get; set; }
+        public DateTime? LastLoginOn { get; set; }
+        public string AvatarUrl { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public DateTime UpdatedOn { get; set; }
     }
 }

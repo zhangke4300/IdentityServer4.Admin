@@ -508,6 +508,16 @@ namespace Skoruba.IdentityServer4.Admin.BusinessLogic.Identity.Services
             return await IdentityRepository.GetHierarchyBaseInclude();
             
         }
+        public async Task<int> GetHierarchyIdByKey(string dataKey)
+        {
+            if (dataKey != null)
+            {
+                var hierarchys = await IdentityRepository.GetHierarchyBaseByKey(dataKey.Replace("-", ""));
+                return hierarchys == null ? -1 : hierarchys.Id;
+            }
+            else
+                return -1;
+        }
 
         public Task UpdateHierarchyBases(HierarchyDto hierarchy)
         {

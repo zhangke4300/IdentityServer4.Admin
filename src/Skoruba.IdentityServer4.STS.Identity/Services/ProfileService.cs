@@ -38,7 +38,7 @@ namespace Skoruba.IdentityServer4.STS.Identity.Services
             var roleClaims = await getClaimValues(user);
             if (roleClaims.Count() > 0)
             {
-                var permissions = roleClaims?.Aggregate("", (s, permission) => s + permission);
+                var permissions = roleClaims?.Aggregate("", (s, permission) => s + permission + "|");
                 // Add custom claims in token here based on user properties or any other source
                 claims.Add(new Claim("pemissons", permissions ?? string.Empty));
             }
